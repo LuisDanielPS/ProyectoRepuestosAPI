@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ProyectoModelStoreContainer" CdmEntityContainer="ProyectoEntities">
+    <EntitySetMapping Name="Categorias">
+      <EntityTypeMapping TypeName="ProyectoModel.Categorias">
+        <MappingFragment StoreEntitySet="Categorias">
+          <ScalarProperty Name="categoria_id" ColumnName="categoria_id" />
+          <ScalarProperty Name="categoria_descripcion" ColumnName="categoria_descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Clientes">
+      <EntityTypeMapping TypeName="ProyectoModel.Clientes">
+        <MappingFragment StoreEntitySet="Clientes">
+          <ScalarProperty Name="cliente_id" ColumnName="cliente_id" />
+          <ScalarProperty Name="cliente_cedula" ColumnName="cliente_cedula" />
+          <ScalarProperty Name="cliente_nombre" ColumnName="cliente_nombre" />
+          <ScalarProperty Name="cliente_apellido" ColumnName="cliente_apellido" />
+          <ScalarProperty Name="cliente_correo" ColumnName="cliente_correo" />
+          <ScalarProperty Name="cliente_telefono" ColumnName="cliente_telefono" />
+          <ScalarProperty Name="cliente_direccion" ColumnName="cliente_direccion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Estados">
+      <EntityTypeMapping TypeName="ProyectoModel.Estados">
+        <MappingFragment StoreEntitySet="Estados">
+          <ScalarProperty Name="estado_id" ColumnName="estado_id" />
+          <ScalarProperty Name="estado_descripcion" ColumnName="estado_descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Facturas">
+      <EntityTypeMapping TypeName="ProyectoModel.Facturas">
+        <MappingFragment StoreEntitySet="Facturas">
+          <ScalarProperty Name="factura_id" ColumnName="factura_id" />
+          <ScalarProperty Name="cliente_id" ColumnName="cliente_id" />
+          <ScalarProperty Name="factura_tipo" ColumnName="factura_tipo" />
+          <ScalarProperty Name="factura_fecha" ColumnName="factura_fecha" />
+          <ScalarProperty Name="factura_descripcion" ColumnName="factura_descripcion" />
+          <ScalarProperty Name="factura_total" ColumnName="factura_total" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="facturasDetalle">
+      <EntityTypeMapping TypeName="ProyectoModel.facturasDetalle">
+        <MappingFragment StoreEntitySet="facturasDetalle">
+          <ScalarProperty Name="facturaD_id" ColumnName="facturaD_id" />
+          <ScalarProperty Name="factura_id" ColumnName="factura_id" />
+          <ScalarProperty Name="producto_id" ColumnName="producto_id" />
+          <ScalarProperty Name="facturaD_cantidad" ColumnName="facturaD_cantidad" />
+          <ScalarProperty Name="facturaD_precio" ColumnName="facturaD_precio" />
+          <ScalarProperty Name="facturaD_descuento" ColumnName="facturaD_descuento" />
+          <ScalarProperty Name="facturaD_total" ColumnName="facturaD_total" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ordenDetalle">
+      <EntityTypeMapping TypeName="ProyectoModel.ordenDetalle">
+        <MappingFragment StoreEntitySet="ordenDetalle">
+          <ScalarProperty Name="ordenD_id" ColumnName="ordenD_id" />
+          <ScalarProperty Name="orden_id" ColumnName="orden_id" />
+          <ScalarProperty Name="producto_id" ColumnName="producto_id" />
+          <ScalarProperty Name="producto_cantidad" ColumnName="producto_cantidad" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ordenesCompra">
+      <EntityTypeMapping TypeName="ProyectoModel.ordenesCompra">
+        <MappingFragment StoreEntitySet="ordenesCompra">
+          <ScalarProperty Name="orden_id" ColumnName="orden_id" />
+          <ScalarProperty Name="proveedor_id" ColumnName="proveedor_id" />
+          <ScalarProperty Name="estado_id" ColumnName="estado_id" />
+          <ScalarProperty Name="orden_tipo" ColumnName="orden_tipo" />
+          <ScalarProperty Name="orden_fecha" ColumnName="orden_fecha" />
+          <ScalarProperty Name="orden_facturarA" ColumnName="orden_facturarA" />
+          <ScalarProperty Name="orden_entregarA" ColumnName="orden_entregarA" />
+          <ScalarProperty Name="orden_descripcion" ColumnName="orden_descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Productos">
+      <EntityTypeMapping TypeName="ProyectoModel.Productos">
+        <MappingFragment StoreEntitySet="Productos">
+          <ScalarProperty Name="producto_id" ColumnName="producto_id" />
+          <ScalarProperty Name="categoria_id" ColumnName="categoria_id" />
+          <ScalarProperty Name="estado_id" ColumnName="estado_id" />
+          <ScalarProperty Name="producto_descripcion" ColumnName="producto_descripcion" />
+          <ScalarProperty Name="producto_existencias" ColumnName="producto_existencias" />
+          <ScalarProperty Name="producto_precio" ColumnName="producto_precio" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Proveedores">
+      <EntityTypeMapping TypeName="ProyectoModel.Proveedores">
+        <MappingFragment StoreEntitySet="Proveedores">
+          <ScalarProperty Name="proveedor_id" ColumnName="proveedor_id" />
+          <ScalarProperty Name="proveedor_cedula" ColumnName="proveedor_cedula" />
+          <ScalarProperty Name="proveedor_nombre" ColumnName="proveedor_nombre" />
+          <ScalarProperty Name="proveedor_apellido" ColumnName="proveedor_apellido" />
+          <ScalarProperty Name="proveedor_correo" ColumnName="proveedor_correo" />
+          <ScalarProperty Name="proveedor_telefono" ColumnName="proveedor_telefono" />
+          <ScalarProperty Name="proveedor_direccion" ColumnName="proveedor_direccion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="ProyectoModel.Roles">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="rol_id" ColumnName="rol_id" />
+          <ScalarProperty Name="rol_descripcion" ColumnName="rol_descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Usuarios">
+      <EntityTypeMapping TypeName="ProyectoModel.Usuarios">
+        <MappingFragment StoreEntitySet="Usuarios">
+          <ScalarProperty Name="usuario_id" ColumnName="usuario_id" />
+          <ScalarProperty Name="usu_correo" ColumnName="usu_correo" />
+          <ScalarProperty Name="usu_clave" ColumnName="usu_clave" />
+          <ScalarProperty Name="usu_nombre" ColumnName="usu_nombre" />
+          <ScalarProperty Name="rol_id" ColumnName="rol_id" />
+          <ScalarProperty Name="usu_identificacion" ColumnName="usu_identificacion" />
+          <ScalarProperty Name="usu_claveTemporal" ColumnName="usu_claveTemporal" />
+          <ScalarProperty Name="usu_caducidad" ColumnName="usu_caducidad" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
