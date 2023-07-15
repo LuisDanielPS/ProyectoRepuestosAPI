@@ -64,7 +64,7 @@ namespace Repuestos_API.Controllers
 
         [HttpPost]
         [Route("api/RegistrarUsuario")]
-        public int RegistrarUsuario(UsuarioEN usuario)
+        public string RegistrarUsuario(UsuarioEN usuario)
         {
             using (var bd = new ProyectoEntities())
             {
@@ -80,11 +80,11 @@ namespace Repuestos_API.Controllers
                     bd.Usuarios.Add(tabla);
                     bd.SaveChanges();
 
-                    return 1;
+                    return "Usuario registrado con éxito";
                 }
                 catch (Exception ex)
                 {
-                    return 0;
+                    return "Error al ejecutar la consulta: " + ex;
                 }
             }
         }
