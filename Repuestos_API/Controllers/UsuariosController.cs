@@ -56,10 +56,6 @@ namespace Repuestos_API.Controllers
                 return null;
             }
 
-            /*using (var bd = new KN_ProyectoEntities())
-            {
-                return bd.IniciarSesion(entidad.CorreoElectronico, entidad.Contrasenna).FirstOrDefault();
-            }*/
         }
 
         [HttpPost]
@@ -88,7 +84,6 @@ namespace Repuestos_API.Controllers
                 }
             }
         }
-
 
 
         [HttpPost]
