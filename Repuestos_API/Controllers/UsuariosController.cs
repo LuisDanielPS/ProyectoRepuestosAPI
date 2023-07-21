@@ -84,7 +84,46 @@ namespace Repuestos_API.Controllers
                 }
             }
         }
+        [HttpGet]
+        [Route("api/ConsultarUsuarios")]
+        public List<UsuarioEN> ConsultarUsuarios()
+        {
+            using (var bd = new ProyectoEntities())
+            {
+                var datos = (from x in bd.Usuarios
+                             join y in bd.Roles on x.rol_id equals y.rol_id
+                             select new
+                             {
+                                 x.rol_id,
+                                 x.usu_identificacion,
+                                 x.usu_nombre,
+                                 x.usu_correo,
+                                 x.usuario_id,
+                                 y.rol_descripcion,
+                             }).ToList();
 
+                if (datos.Count > 0)
+                {
+                    List<UsuarioEN> res = new List<UsuarioEN>();
+                    foreach (var item in datos)
+                    {
+                        res.Add(new UsuarioEN
+                        {
+                           usuario_id = item.usuario_id,
+                            usu_correo = item.usu_correo,
+                            usu_nombre = item.usu_nombre,
+                            usu_identificacion = item.usu_identificacion,
+                            rol_descripcion = item.rol_descripcion
+                           
+                        });
+                    }
+
+                    return res;
+                }
+
+                return new List<UsuarioEN>();
+            }
+        }
 
         [HttpPost]
         [Route("api/RecuperarContrasenia")]

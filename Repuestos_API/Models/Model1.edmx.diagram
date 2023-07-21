@@ -26,6 +26,7 @@
         <AssociationConnector Association="ProyectoModel.FK_ordenDetalle_Productos" ManuallyRouted="false" />
         <AssociationConnector Association="ProyectoModel.FK_ordenesCompra_Proveedores" ManuallyRouted="false" />
         <AssociationConnector Association="ProyectoModel.FK_Usuario_Rol" ManuallyRouted="false" />
+        <AssociationConnector Association="ProyectoModel.FK_facturasDetalle_Facturas1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

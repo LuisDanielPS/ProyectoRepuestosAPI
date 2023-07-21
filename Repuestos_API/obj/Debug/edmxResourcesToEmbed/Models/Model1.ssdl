@@ -53,7 +53,7 @@
     <Key>
       <PropertyRef Name="ordenD_id" />
     </Key>
-    <Property Name="ordenD_id" Type="int" Nullable="false" />
+    <Property Name="ordenD_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="orden_id" Type="int" Nullable="false" />
     <Property Name="producto_id" Type="int" Nullable="false" />
     <Property Name="producto_cantidad" Type="int" Nullable="false" />
@@ -75,7 +75,7 @@
     <Key>
       <PropertyRef Name="producto_id" />
     </Key>
-    <Property Name="producto_id" Type="int" Nullable="false" />
+    <Property Name="producto_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="categoria_id" Type="int" Nullable="false" />
     <Property Name="estado_id" Type="int" Nullable="false" />
     <Property Name="producto_descripcion" Type="varchar" MaxLength="50" Nullable="false" />
@@ -107,7 +107,7 @@
     </Key>
     <Property Name="usuario_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="usu_correo" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="usu_clave" Type="varchar(max)" Nullable="false" />
+    <Property Name="usu_clave" Type="varchar" MaxLength="25" Nullable="false" />
     <Property Name="usu_nombre" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="rol_id" Type="int" Nullable="false" />
     <Property Name="usu_identificacion" Type="varchar" MaxLength="20" Nullable="false" />
@@ -128,13 +128,13 @@
   </Association>
   <Association Name="FK_facturasDetalle_Facturas">
     <End Role="Facturas" Type="Self.Facturas" Multiplicity="1" />
-    <End Role="facturasDetalle" Type="Self.facturasDetalle" Multiplicity="*" />
+    <End Role="facturasDetalle" Type="Self.facturasDetalle" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Facturas">
         <PropertyRef Name="factura_id" />
       </Principal>
       <Dependent Role="facturasDetalle">
-        <PropertyRef Name="factura_id" />
+        <PropertyRef Name="facturaD_id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

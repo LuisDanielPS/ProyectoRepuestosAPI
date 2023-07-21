@@ -24,5 +24,6 @@ namespace Repuestos_API.Models
     
         public virtual Facturas Facturas { get; set; }
         public virtual Productos Productos { get; set; }
+        public virtual Facturas Facturas1 { get; set; }
     }
 }

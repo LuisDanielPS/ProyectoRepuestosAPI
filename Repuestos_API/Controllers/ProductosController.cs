@@ -49,7 +49,17 @@ namespace Repuestos_API.Controllers
             using (var bd = new ProyectoEntities())
             {
                 var datos = (from x in bd.Productos
-                             select x).ToList();
+                             join y in bd.Categorias on x.categoria_id equals y.categoria_id
+                             select new
+                             {
+                                 x.producto_id,
+                                 x.categoria_id,
+                                 x.estado_id,
+                                 x.producto_descripcion,
+                                 x.producto_existencias,
+                                 x.producto_precio,
+                                 y.categoria_descripcion 
+                             }).ToList();
 
                 if (datos.Count > 0)
                 {
@@ -63,7 +73,8 @@ namespace Repuestos_API.Controllers
                             estado_id = item.estado_id,
                             producto_descripcion = item.producto_descripcion,
                             producto_existencias = item.producto_existencias,
-                            producto_precio = item.producto_precio
+                            producto_precio = item.producto_precio,
+                            categoria_descripcion = item.categoria_descripcion 
                         });
                     }
 
@@ -73,6 +84,7 @@ namespace Repuestos_API.Controllers
                 return new List<ProductoEN>();
             }
         }
+
 
         [HttpPost]
         [Route("api/EliminarProducto")]
