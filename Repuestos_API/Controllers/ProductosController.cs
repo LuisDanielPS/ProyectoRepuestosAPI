@@ -50,6 +50,7 @@ namespace Repuestos_API.Controllers
             {
                 var datos = (from x in bd.Productos
                              join y in bd.Categorias on x.categoria_id equals y.categoria_id
+                             join u in bd.Estados on x.estado_id equals u.estado_id
                              select new
                              {
                                  x.producto_id,
@@ -58,7 +59,8 @@ namespace Repuestos_API.Controllers
                                  x.producto_descripcion,
                                  x.producto_existencias,
                                  x.producto_precio,
-                                 y.categoria_descripcion 
+                                 y.categoria_descripcion ,
+                                 u.estado_descripcion
                              }).ToList();
 
                 if (datos.Count > 0)
@@ -70,11 +72,12 @@ namespace Repuestos_API.Controllers
                         {
                             producto_id = item.producto_id,
                             categoria_id = item.categoria_id,
+                            categoria_descripcion = item.categoria_descripcion,
                             estado_id = item.estado_id,
                             producto_descripcion = item.producto_descripcion,
                             producto_existencias = item.producto_existencias,
                             producto_precio = item.producto_precio,
-                            categoria_descripcion = item.categoria_descripcion 
+                            estado_descripcion = item.estado_descripcion                 
                         });
                     }
 

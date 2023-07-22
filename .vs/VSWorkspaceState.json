@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Repuestos_API"
+    "\\Repuestos_API",
+    "\\Repuestos_API\\Controllers"
   ],
-  "SelectedNode": "\\Repuestos_API\\Web.config",
+  "SelectedNode": "\\Repuestos_API\\Controllers\\ProductosController.cs",
   "PreviewInSolutionExplorer": false
 }

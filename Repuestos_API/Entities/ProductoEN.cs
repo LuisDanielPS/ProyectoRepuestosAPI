@@ -10,6 +10,7 @@ namespace Repuestos_API.Entities
         public int producto_id { get; set; }
         public int categoria_id { get; set; }
         public string  categoria_descripcion { get; set; }
+        public string estado_descripcion { get; set; }
         public int estado_id { get; set; }
         public string producto_descripcion { get; set; }
         public int producto_existencias { get; set; }
