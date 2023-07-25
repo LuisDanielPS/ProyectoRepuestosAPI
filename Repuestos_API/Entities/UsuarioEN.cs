@@ -14,5 +14,7 @@ namespace Repuestos_API.Entities
         public string usu_nombre { get; set; }
         public int rol_id { get; set; }
         public string rol_descripcion { get; set; }
+        public string ConfirmarContrasenna { get; set; }
+        public string ContrasennaNueva { get; set; }
     }
 }

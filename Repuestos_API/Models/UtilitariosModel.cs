@@ -39,7 +39,7 @@ namespace Repuestos_API.Models
             client.UseDefaultCredentials = false;
             client.Credentials = new NetworkCredential(correoEnvio, ContraseniaCorreo);
             client.Port = 587;
-            client.Host = "smtp.gmail.com";
+            client.Host = "smtp.office365.com";
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.EnableSsl = true;
             client.Send(msg);

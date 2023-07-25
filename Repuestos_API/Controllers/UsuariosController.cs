@@ -151,5 +151,27 @@ namespace Repuestos_API.Controllers
                 return false;
             }
         }
+
+        [HttpPut]
+        [Route("api/CambiarContrasenna")]
+        public int CambiarContrasenna(UsuarioEN entidad)
+        {
+            using (var bd = new ProyectoEntities())
+            {
+                var datos = (from x in bd.Usuarios
+                             where x.usuario_id == entidad.usuario_id
+                             select x).FirstOrDefault();
+
+                if (datos != null)
+                {
+                    datos.usu_clave = entidad.ContrasennaNueva;
+                    datos.usu_claveTemporal = false;
+                    datos.usu_caducidad = DateTime.Now.AddYears(1);
+                    return bd.SaveChanges();
+                }
+
+                return 0;
+            }
+        }
     }
 }
