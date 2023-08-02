@@ -89,6 +89,10 @@ namespace Repuestos_API.Controllers
         }
 
 
+        
+
+
+
         [HttpPost]
         [Route("api/EliminarProducto")]
         public string EliminarProducto(int producto_id)
@@ -114,33 +118,31 @@ namespace Repuestos_API.Controllers
             }
         }
 
-        [HttpPost]
+        
+        [HttpPut]
         [Route("api/EditarProducto")]
-        public string EditarProducto(ProductoEN nuevoProducto)
+        public int EditarProducto(ProductoEN entidad)
         {
             using (var bd = new ProyectoEntities())
             {
-                try
-                {
-                    var producto = bd.Productos.FirstOrDefault(p => p.producto_id == nuevoProducto.producto_id);
-                    if (producto != null)
-                    {
-                        producto.categoria_id = nuevoProducto.categoria_id;
-                        producto.estado_id = nuevoProducto.estado_id;
-                        producto.producto_descripcion = nuevoProducto.producto_descripcion;
-                        producto.producto_existencias = nuevoProducto.producto_existencias;
-                        producto.producto_precio = nuevoProducto.producto_precio;
-                        bd.SaveChanges();
-                        return "Producto modificado con éxito";
-                    }
+                var datos = (from x in bd.Productos
+                             where x.producto_id == entidad.producto_id
+                             select x).FirstOrDefault();
 
-                    return "El producto indicado no existe, por favor verifique";
-                }
-                catch (Exception ex)
+                if (datos != null)
                 {
-                    return "Error al ejecutar la consulta: " + ex;
+                    datos.producto_precio = entidad.producto_precio;
+                    datos.producto_descripcion = entidad.producto_descripcion;
+                    datos.producto_existencias = entidad.producto_existencias;
+                    datos.categoria_id = entidad.categoria_id;
+                    datos.estado_id = entidad.estado_id;
+                    return bd.SaveChanges();
                 }
+
+                return 0;
             }
         }
+
+
     }
 }

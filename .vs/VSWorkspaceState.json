@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Repuestos_API",
+    "\\Repuestos_API\\Entities"
   ],
+  "SelectedNode": "\\Repuestos_API\\Entities\\ProductoEN.cs",
   "PreviewInSolutionExplorer": false
 }
