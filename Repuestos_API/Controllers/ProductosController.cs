@@ -93,7 +93,7 @@ namespace Repuestos_API.Controllers
 
 
 
-        [HttpPost]
+        [HttpDelete]
         [Route("api/EliminarProducto")]
         public string EliminarProducto(int producto_id)
         {
