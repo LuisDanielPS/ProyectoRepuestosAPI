@@ -19,6 +19,7 @@ namespace Repuestos_API.Controllers
             {
                 try
                 {
+                    
                     Clientes tabla = new Clientes();
                     tabla.cliente_cedula = cliente.cliente_cedula;
                     tabla.cliente_nombre = cliente.cliente_nombre;
@@ -37,6 +38,7 @@ namespace Repuestos_API.Controllers
                 }
             }
         }
+
 
         [HttpGet]
         [Route("api/ConsultarClientes")]
@@ -71,15 +73,15 @@ namespace Repuestos_API.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("api/EliminarCliente")]
+        [HttpDelete]
+        [Route("api/EliminaCliente")]
         public string EliminarCliente(int cliente_id)
         {
             using (var bd = new ProyectoEntities())
             {
                 try
                 {
-                    var cliente = bd.Clientes.FirstOrDefault(c => c.cliente_id == cliente_id);
+                    var cliente = bd.Clientes.FirstOrDefault(p => p.cliente_id == cliente_id);
                     if (cliente != null)
                     {
                         bd.Clientes.Remove(cliente);
@@ -96,33 +98,29 @@ namespace Repuestos_API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("api/EditarCliente")]
-        public string EditarCliente(ClienteEN nuevoCliente)
+        public int EditarCliente(ClienteEN entidad)
         {
             using (var bd = new ProyectoEntities())
             {
-                try
-                {
-                    var cliente = bd.Clientes.FirstOrDefault(c => c.cliente_id == nuevoCliente.cliente_id);
-                    if (cliente != null)
-                    {
-                        cliente.cliente_cedula = nuevoCliente.cliente_cedula;
-                        cliente.cliente_nombre = nuevoCliente.cliente_nombre;
-                        cliente.cliente_apellido = nuevoCliente.cliente_apellido;
-                        cliente.cliente_correo = nuevoCliente.cliente_correo;
-                        cliente.cliente_telefono = nuevoCliente.cliente_telefono;
-                        cliente.cliente_direccion = nuevoCliente.cliente_direccion;
-                        bd.SaveChanges();
-                        return "Cliente modificado con éxito";
-                    }
+                var datos = (from x in bd.Clientes
+                             where x.cliente_id == entidad.cliente_id
+                             select x).FirstOrDefault();
 
-                    return "El cliente indicado no existe, por favor verifique";
-                }
-                catch (Exception ex)
+                if (datos != null)
                 {
-                    return "Error al ejecutar la consulta: " + ex;
+                    datos.cliente_id = entidad.cliente_id;
+                    datos.cliente_cedula = entidad.cliente_cedula;
+                    datos.cliente_nombre = entidad.cliente_nombre;
+                    datos.cliente_apellido = entidad.cliente_apellido;
+                    datos.cliente_correo = entidad.cliente_correo;
+                    datos.cliente_telefono = entidad.cliente_telefono;
+                    datos.cliente_direccion = entidad.cliente_direccion;
+                    return bd.SaveChanges();
                 }
+
+                return 0;
             }
         }
     }
