@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ProyectoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ProyectoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Categorias">
           <Key>
             <PropertyRef Name="categoria_id" />
@@ -58,7 +58,7 @@
           <Key>
             <PropertyRef Name="ordenD_id" />
           </Key>
-          <Property Name="ordenD_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ordenD_id" Type="int" Nullable="false" />
           <Property Name="orden_id" Type="int" Nullable="false" />
           <Property Name="producto_id" Type="int" Nullable="false" />
           <Property Name="producto_cantidad" Type="int" Nullable="false" />
@@ -133,13 +133,13 @@
         </Association>
         <Association Name="FK_facturasDetalle_Facturas">
           <End Role="Facturas" Type="Self.Facturas" Multiplicity="1" />
-          <End Role="facturasDetalle" Type="Self.facturasDetalle" Multiplicity="0..1" />
+          <End Role="facturasDetalle" Type="Self.facturasDetalle" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Facturas">
               <PropertyRef Name="factura_id" />
             </Principal>
             <Dependent Role="facturasDetalle">
-              <PropertyRef Name="facturaD_id" />
+              <PropertyRef Name="factura_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -292,7 +292,8 @@
             <End Role="Usuarios" EntitySet="Usuarios" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ProyectoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -338,7 +339,6 @@
           <Property Name="factura_total" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
           <NavigationProperty Name="Clientes" Relationship="Self.FK_Facturas_Clientes" FromRole="Facturas" ToRole="Clientes" />
           <NavigationProperty Name="facturasDetalle" Relationship="Self.FK_facturasDetalle_Facturas" FromRole="Facturas" ToRole="facturasDetalle" />
-          <NavigationProperty Name="facturasDetalle1" Relationship="ProyectoModel.FK_facturasDetalle_Facturas1" FromRole="Facturas" ToRole="facturasDetalle" />
         </EntityType>
         <EntityType Name="facturasDetalle">
           <Key>
@@ -353,7 +353,6 @@
           <Property Name="facturaD_total" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
           <NavigationProperty Name="Facturas" Relationship="Self.FK_facturasDetalle_Facturas" FromRole="facturasDetalle" ToRole="Facturas" />
           <NavigationProperty Name="Productos" Relationship="Self.FK_facturasDetalle_Productos" FromRole="facturasDetalle" ToRole="Productos" />
-          <NavigationProperty Name="Facturas1" Relationship="ProyectoModel.FK_facturasDetalle_Facturas1" FromRole="facturasDetalle" ToRole="Facturas" />
         </EntityType>
         <EntityType Name="ordenDetalle">
           <Key>
@@ -386,10 +385,10 @@
           <Key>
             <PropertyRef Name="producto_id" />
           </Key>
-          <Property Name="producto_id" Type="Int32" Nullable="false" />
+          <Property Name="producto_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="categoria_id" Type="Int32" Nullable="false" />
           <Property Name="estado_id" Type="Int32" Nullable="false" />
-          <Property Name="producto_descripcion" Type="String" MaxLength="50" FixedLength="false" Nullable="false" Unicode="false" />
+          <Property Name="producto_descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="producto_existencias" Type="Int32" Nullable="false" />
           <Property Name="producto_precio" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
           <NavigationProperty Name="Categorias" Relationship="Self.FK_Productos_Categorias" FromRole="Productos" ToRole="Categorias" />
@@ -604,23 +603,7 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Usuarios" EntitySet="Usuarios" />
           </AssociationSet>
-          <AssociationSet Name="FK_facturasDetalle_Facturas1" Association="ProyectoModel.FK_facturasDetalle_Facturas1">
-            <End Role="Facturas" EntitySet="Facturas" />
-            <End Role="facturasDetalle" EntitySet="facturasDetalle" />
-          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK_facturasDetalle_Facturas1">
-          <End Type="ProyectoModel.Facturas" Role="Facturas" Multiplicity="1" />
-          <End Type="ProyectoModel.facturasDetalle" Role="facturasDetalle" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Facturas">
-              <PropertyRef Name="factura_id" />
-            </Principal>
-            <Dependent Role="facturasDetalle">
-              <PropertyRef Name="facturaD_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

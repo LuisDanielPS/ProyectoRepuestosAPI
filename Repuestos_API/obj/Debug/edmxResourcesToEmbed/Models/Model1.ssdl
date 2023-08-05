@@ -53,7 +53,7 @@
     <Key>
       <PropertyRef Name="ordenD_id" />
     </Key>
-    <Property Name="ordenD_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ordenD_id" Type="int" Nullable="false" />
     <Property Name="orden_id" Type="int" Nullable="false" />
     <Property Name="producto_id" Type="int" Nullable="false" />
     <Property Name="producto_cantidad" Type="int" Nullable="false" />
@@ -128,13 +128,13 @@
   </Association>
   <Association Name="FK_facturasDetalle_Facturas">
     <End Role="Facturas" Type="Self.Facturas" Multiplicity="1" />
-    <End Role="facturasDetalle" Type="Self.facturasDetalle" Multiplicity="0..1" />
+    <End Role="facturasDetalle" Type="Self.facturasDetalle" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Facturas">
         <PropertyRef Name="factura_id" />
       </Principal>
       <Dependent Role="facturasDetalle">
-        <PropertyRef Name="facturaD_id" />
+        <PropertyRef Name="factura_id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

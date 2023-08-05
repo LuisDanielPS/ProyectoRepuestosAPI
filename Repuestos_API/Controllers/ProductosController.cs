@@ -88,11 +88,6 @@ namespace Repuestos_API.Controllers
             }
         }
 
-
-        
-
-
-
         [HttpDelete]
         [Route("api/EliminarProducto")]
         public string EliminarProducto(int producto_id)
@@ -143,6 +138,40 @@ namespace Repuestos_API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("api/ConsultarProductoId")]
+        public ProductoEN ConsultarProductoId(int producto_id)
+        {
+            try
+            {
+                using (var bd = new ProyectoEntities())
+                {
+                    var producto = (from x in bd.Productos
+                                    where x.producto_id == producto_id
+                                    select x).FirstOrDefault();
+
+                    if (producto != null)
+                    {
+                        ProductoEN res = new ProductoEN();
+
+                        res.producto_id = producto.producto_id;
+                        res.categoria_id = producto.categoria_id;
+                        res.estado_id = producto.estado_id;
+                        res.producto_descripcion = producto.producto_descripcion;
+                        res.producto_existencias = producto.producto_existencias;
+                        res.producto_precio = producto.producto_precio;
+
+                        return res;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al generar la consulta: " + ex.Message);
+                return null;
+            }
+        }
 
     }
 }
