@@ -1,0 +1,14 @@
+Correr los inserts
+Volver a crear el Model del Entity (verificar primero que factura_id en facturasDetalle sea autoincremental).
+
+insert into categorias values ('Llantas');
+
+insert into estados values ('Disponible');
+
+insert into clientes values ('110101010','Johan','Aguilar','a@a.com','8888-8888','Moravia');
+
+insert into productos (categoria_id, estado_id, producto_descripcion, producto_existencias, producto_precio) values (1,1,'Llantas Firestone 14',10,30000.00);
+
+insert into productos (categoria_id, estado_id, producto_descripcion, producto_existencias, producto_precio) values (1,1,'Llantas Firestone 16',10,40000.00);
+
+insert into productos (categoria_id, estado_id, producto_descripcion, producto_existencias, producto_precio) values (1,1,'Llantas Firestone 18',10,50000.00);

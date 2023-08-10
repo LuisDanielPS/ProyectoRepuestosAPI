@@ -138,6 +138,30 @@ namespace Repuestos_API.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("api/EditarProducto")]
+        public int EditarProductoExistencia(int producto_id, int producto_existencias, string tipo)
+        {
+            using (var bd = new ProyectoEntities())
+            {
+                var datos = (from x in bd.Productos
+                             where x.producto_id == producto_id
+                             select x).FirstOrDefault();
+
+                if (datos != null && tipo == "factura")
+                {
+                    datos.producto_existencias = datos.producto_existencias - producto_existencias;
+                    return bd.SaveChanges();
+                } else if (datos != null && tipo == "orden")
+                {
+                    datos.producto_existencias = datos.producto_existencias + producto_existencias;
+                    return bd.SaveChanges();
+                }
+
+                return 0;
+            }
+        }
+
         [HttpGet]
         [Route("api/ConsultarProductoId")]
         public ProductoEN ConsultarProductoId(int producto_id)
