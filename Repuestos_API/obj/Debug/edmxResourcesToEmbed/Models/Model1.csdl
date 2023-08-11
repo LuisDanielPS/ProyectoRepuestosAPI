@@ -42,6 +42,7 @@
     <Property Name="factura_total" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
     <NavigationProperty Name="Clientes" Relationship="Self.FK_Facturas_Clientes" FromRole="Facturas" ToRole="Clientes" />
     <NavigationProperty Name="facturasDetalle" Relationship="Self.FK_facturasDetalle_Facturas" FromRole="Facturas" ToRole="facturasDetalle" />
+    <NavigationProperty Name="facturasDetalle1" Relationship="ProyectoModel.FK_facturasDetalle_Facturas1" FromRole="Facturas" ToRole="facturasDetalle" />
   </EntityType>
   <EntityType Name="facturasDetalle">
     <Key>
@@ -56,6 +57,7 @@
     <Property Name="facturaD_total" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
     <NavigationProperty Name="Facturas" Relationship="Self.FK_facturasDetalle_Facturas" FromRole="facturasDetalle" ToRole="Facturas" />
     <NavigationProperty Name="Productos" Relationship="Self.FK_facturasDetalle_Productos" FromRole="facturasDetalle" ToRole="Productos" />
+    <NavigationProperty Name="Facturas1" Relationship="ProyectoModel.FK_facturasDetalle_Facturas1" FromRole="facturasDetalle" ToRole="Facturas" />
   </EntityType>
   <EntityType Name="ordenDetalle">
     <Key>
@@ -126,7 +128,7 @@
     </Key>
     <Property Name="usuario_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="usu_correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="usu_clave" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="usu_clave" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
     <Property Name="usu_nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="rol_id" Type="Int32" Nullable="false" />
     <Property Name="usu_identificacion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
@@ -306,5 +308,21 @@
       <End Role="Roles" EntitySet="Roles" />
       <End Role="Usuarios" EntitySet="Usuarios" />
     </AssociationSet>
+    <AssociationSet Name="FK_facturasDetalle_Facturas1" Association="ProyectoModel.FK_facturasDetalle_Facturas1">
+      <End Role="Facturas" EntitySet="Facturas" />
+      <End Role="facturasDetalle" EntitySet="facturasDetalle" />
+    </AssociationSet>
   </EntityContainer>
+  <Association Name="FK_facturasDetalle_Facturas1">
+    <End Type="ProyectoModel.Facturas" Role="Facturas" Multiplicity="1" />
+    <End Type="ProyectoModel.facturasDetalle" Role="facturasDetalle" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Facturas">
+        <PropertyRef Name="factura_id" />
+      </Principal>
+      <Dependent Role="facturasDetalle">
+        <PropertyRef Name="facturaD_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

@@ -71,7 +71,7 @@ namespace Repuestos_API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("api/EliminarProveedor")]
         public string EliminarProveedor(int proveedor_id)
         {
@@ -96,34 +96,31 @@ namespace Repuestos_API.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("api/EditarProveedor")]
-        public string EditarProveedor(ProveedorEN nuevoProveedor)
+        [HttpPut]
+        [Route("api/EditaProveedor")]
+        public int EditarProveedor(ProveedorEN entidad)
         {
             using (var bd = new ProyectoEntities())
             {
-                try
-                {
-                    var proveedor = bd.Proveedores.FirstOrDefault(p => p.proveedor_id == nuevoProveedor.proveedor_id);
-                    if (proveedor != null)
-                    {
-                        proveedor.proveedor_cedula = nuevoProveedor.proveedor_cedula;
-                        proveedor.proveedor_nombre = nuevoProveedor.proveedor_nombre;
-                        proveedor.proveedor_apellido = nuevoProveedor.proveedor_apellido;
-                        proveedor.proveedor_correo = nuevoProveedor.proveedor_correo;
-                        proveedor.proveedor_telefono = nuevoProveedor.proveedor_telefono;
-                        proveedor.proveedor_direccion = nuevoProveedor.proveedor_direccion;
-                        bd.SaveChanges();
-                        return "Proveedor modificado con éxito";
-                    }
+                var datos = (from x in bd.Proveedores
+                             where x.proveedor_id == entidad.proveedor_id
+                             select x).FirstOrDefault();
 
-                    return "El proveedor indicado no existe, por favor verifique";
-                }
-                catch (Exception ex)
+                if (datos != null)
                 {
-                    return "Error al ejecutar la consulta: " + ex;
+                    datos.proveedor_id = entidad.proveedor_id;
+                    datos.proveedor_nombre = entidad.proveedor_nombre;
+                    datos.proveedor_apellido = entidad.proveedor_apellido;
+                    datos.proveedor_cedula = entidad.proveedor_cedula;
+                    datos.proveedor_correo = entidad.proveedor_correo;
+                    datos.proveedor_direccion = entidad.proveedor_direccion;
+                    datos.proveedor_telefono = entidad.proveedor_telefono;
+                    return bd.SaveChanges();
                 }
+
+                return 0;
             }
         }
+
     }
 }

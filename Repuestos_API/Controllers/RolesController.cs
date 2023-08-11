@@ -61,7 +61,8 @@ namespace Repuestos_API.Controllers
             }
         }
 
-        [HttpPost]
+
+        [HttpDelete]
         [Route("api/EliminarRol")]
         public string EliminarRol(int rol_id)
         {
@@ -69,7 +70,7 @@ namespace Repuestos_API.Controllers
             {
                 try
                 {
-                    var rol = bd.Roles.FirstOrDefault(r => r.rol_id == rol_id);
+                    var rol = bd.Roles.FirstOrDefault(p => p.rol_id == rol_id);
                     if (rol != null)
                     {
                         bd.Roles.Remove(rol);
@@ -86,29 +87,26 @@ namespace Repuestos_API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("api/EditarRol")]
-        public string EditarRol(RolEN nuevoRol)
+        public int EditarRol(RolEN entidad)
         {
             using (var bd = new ProyectoEntities())
             {
-                try
-                {
-                    var rol = bd.Roles.FirstOrDefault(r => r.rol_id == nuevoRol.rol_id);
-                    if (rol != null)
-                    {
-                        rol.rol_descripcion = nuevoRol.rol_descripcion;
-                        bd.SaveChanges();
-                        return "Rol modificado con éxito";
-                    }
+                var datos = (from x in bd.Roles
+                             where x.rol_id == entidad.rol_id
+                             select x).FirstOrDefault();
 
-                    return "El rol indicado no existe, por favor verifique";
-                }
-                catch (Exception ex)
+                if (datos != null)
                 {
-                    return "Error al ejecutar la consulta: " + ex;
+                    datos.rol_descripcion = entidad.rol_descripcion;
+                    return bd.SaveChanges();
                 }
+
+                return 0;
             }
         }
+
+
     }
 }

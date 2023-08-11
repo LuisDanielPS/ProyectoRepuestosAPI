@@ -57,7 +57,6 @@ namespace Repuestos_API.Controllers
             }
 
         }
-
         [HttpPost]
         [Route("api/RegistrarUsuario")]
         public string RegistrarUsuario(UsuarioEN usuario)
@@ -66,11 +65,12 @@ namespace Repuestos_API.Controllers
             {
                 try
                 {
+                    
+
                     Usuarios tabla = new Usuarios();
-                    tabla.usu_correo = usuario.usu_correo;
-                    tabla.usu_clave = usuario.usu_clave;
-                    tabla.usu_identificacion = usuario.usu_identificacion;
                     tabla.usu_nombre = usuario.usu_nombre;
+                    tabla.usu_correo = usuario.usu_correo;
+                    tabla.usu_identificacion = usuario.usu_identificacion;
                     tabla.rol_id = usuario.rol_id;
                     tabla.usu_caducidad = DateTime.Now.AddYears(1);
                     bd.Usuarios.Add(tabla);
@@ -84,6 +84,9 @@ namespace Repuestos_API.Controllers
                 }
             }
         }
+
+
+
         [HttpGet]
         [Route("api/ConsultarUsuarios")]
         public List<UsuarioEN> ConsultarUsuarios()
@@ -125,8 +128,53 @@ namespace Repuestos_API.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("api/EditarUsuario")]
+        public int EditarUsuario(UsuarioEN entidad)
+        {
+            using (var bd = new ProyectoEntities())
+            {
+                var datos = (from x in bd.Usuarios
+                             where x.usuario_id == entidad.usuario_id
+                             select x).FirstOrDefault();
 
+                if (datos != null)
+                {
+                    datos.usu_nombre = entidad.usu_nombre;
+                    datos.usu_identificacion = entidad.usu_identificacion;
+                    datos.usu_correo = entidad.usu_correo;
+                    datos.rol_id = entidad.rol_id;
+                    return bd.SaveChanges();
+                }
 
+                return 0;
+            }
+        }
+
+        [HttpDelete]
+        [Route("api/EliminarUsuario")]
+        public string EliminarUsuario(int usuario_id)
+        {
+            using (var bd = new ProyectoEntities())
+            {
+                try
+                {
+                    var usuario = bd.Usuarios.FirstOrDefault(p => p.usuario_id == usuario_id);
+                    if (usuario != null)
+                    {
+                        bd.Usuarios.Remove(usuario);
+                        bd.SaveChanges();
+                        return "Usuario eliminado con éxito";
+                    }
+
+                    return "El usuario indicado no existe, por favor verifique";
+                }
+                catch (Exception ex)
+                {
+                    return "Error al ejecutar la consulta: " + ex;
+                }
+            }
+        }
 
         [HttpPost]
         [Route("api/RecuperarContrasenia")]

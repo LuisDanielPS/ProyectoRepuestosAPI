@@ -496,3 +496,6 @@ D:\VSProjects\Repuestos_API\Repuestos_API\obj\Debug\Repuestos_API.pdb
 D:\VSProjects\Repuestos_API\Repuestos_API\bin\System.Web.Cors.dll
 D:\VSProjects\Repuestos_API\Repuestos_API\bin\System.Web.Http.Cors.dll
 D:\VSProjects\Repuestos_API\Repuestos_API\bin\System.Web.Http.Cors.xml
+C:\Users\jimen\Source\Repos\LuisDanielPS\ProyectoRepuestosAPI\Repuestos_API\bin\System.Web.Cors.dll
+C:\Users\jimen\Source\Repos\LuisDanielPS\ProyectoRepuestosAPI\Repuestos_API\bin\System.Web.Http.Cors.dll
+C:\Users\jimen\Source\Repos\LuisDanielPS\ProyectoRepuestosAPI\Repuestos_API\bin\System.Web.Http.Cors.xml
