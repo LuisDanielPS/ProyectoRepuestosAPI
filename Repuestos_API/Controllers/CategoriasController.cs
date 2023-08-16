@@ -17,7 +17,7 @@ namespace Repuestos_API.Controllers
         {
             using (var bd = new ProyectoEntities())
             {
-                try
+                try 
                 {
                     Categorias tabla = new Categorias();
                     tabla.categoria_descripcion = categoria.categoria_descripcion;
@@ -37,30 +37,36 @@ namespace Repuestos_API.Controllers
         [Route("api/ConsultarCategorias")]
         public List<CategoriaEN> ConsultarCategorias()
         {
-            using (var bd = new ProyectoEntities())
+            try
             {
-                var datos = (from x in bd.Categorias
-                             select x).ToList();
-
-                if (datos.Count > 0)
+                using (var bd = new ProyectoEntities())
                 {
-                    List<CategoriaEN> res = new List<CategoriaEN>();
-                    foreach (var item in datos)
+                    var datos = (from x in bd.Categorias
+                                 select x).ToList();
+
+                    if (datos.Count > 0)
                     {
-                        res.Add(new CategoriaEN
+                        List<CategoriaEN> res = new List<CategoriaEN>();
+                        foreach (var item in datos)
                         {
-                            categoria_id = item.categoria_id,
-                            categoria_descripcion = item.categoria_descripcion
-                        });
+                            res.Add(new CategoriaEN
+                            {
+                                categoria_id = item.categoria_id,
+                                categoria_descripcion = item.categoria_descripcion
+                            });
+                        }
+
+                        return res;
                     }
 
-                    return res;
+                    return new List<CategoriaEN>();
                 }
-
-                return new List<CategoriaEN>();
+            }
+            catch (Exception ex)
+            {
+                return new List<CategoriaEN>() ;
             }
         }
-
         [HttpPost]
         [Route("api/EliminarCategoria")]
         public string EliminarCategoria(int categoria_id)

@@ -37,29 +37,37 @@ namespace Repuestos_API.Controllers
         [Route("api/ConsultarRoles")]
         public List<RolEN> ConsultarRoles()
         {
-            using (var bd = new ProyectoEntities())
+            try
             {
-                var datos = (from x in bd.Roles
-                             select x).ToList();
-
-                if (datos.Count > 0)
+                using (var bd = new ProyectoEntities())
                 {
-                    List<RolEN> res = new List<RolEN>();
-                    foreach (var item in datos)
+                    var datos = (from x in bd.Roles
+                                 select x).ToList();
+
+                    if (datos.Count > 0)
                     {
-                        res.Add(new RolEN
+                        List<RolEN> res = new List<RolEN>();
+                        foreach (var item in datos)
                         {
-                            rol_id = item.rol_id,
-                            rol_descripcion = item.rol_descripcion
-                        });
+                            res.Add(new RolEN
+                            {
+                                rol_id = item.rol_id,
+                                rol_descripcion = item.rol_descripcion
+                            });
+                        }
+
+                        return res;
                     }
 
-                    return res;
+                    return new List<RolEN>();
                 }
-
+            }
+            catch (Exception ex)
+            {
                 return new List<RolEN>();
             }
         }
+
 
 
         [HttpDelete]
@@ -91,18 +99,25 @@ namespace Repuestos_API.Controllers
         [Route("api/EditarRol")]
         public int EditarRol(RolEN entidad)
         {
-            using (var bd = new ProyectoEntities())
+            try
             {
-                var datos = (from x in bd.Roles
-                             where x.rol_id == entidad.rol_id
-                             select x).FirstOrDefault();
-
-                if (datos != null)
+                using (var bd = new ProyectoEntities())
                 {
-                    datos.rol_descripcion = entidad.rol_descripcion;
-                    return bd.SaveChanges();
-                }
+                    var datos = (from x in bd.Roles
+                                 where x.rol_id == entidad.rol_id
+                                 select x).FirstOrDefault();
 
+                    if (datos != null)
+                    {
+                        datos.rol_descripcion = entidad.rol_descripcion;
+                        return bd.SaveChanges();
+                    }
+
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
                 return 0;
             }
         }

@@ -46,44 +46,51 @@ namespace Repuestos_API.Controllers
         [Route("api/ConsultarProductos")]
         public List<ProductoEN> ConsultarProductos()
         {
-            using (var bd = new ProyectoEntities())
+            try
             {
-                var datos = (from x in bd.Productos
-                             join y in bd.Categorias on x.categoria_id equals y.categoria_id
-                             join u in bd.Estados on x.estado_id equals u.estado_id
-                             select new
-                             {
-                                 x.producto_id,
-                                 x.categoria_id,
-                                 x.estado_id,
-                                 x.producto_descripcion,
-                                 x.producto_existencias,
-                                 x.producto_precio,
-                                 y.categoria_descripcion ,
-                                 u.estado_descripcion
-                             }).ToList();
-
-                if (datos.Count > 0)
+                using (var bd = new ProyectoEntities())
                 {
-                    List<ProductoEN> res = new List<ProductoEN>();
-                    foreach (var item in datos)
+                    var datos = (from x in bd.Productos
+                                 join y in bd.Categorias on x.categoria_id equals y.categoria_id
+                                 join u in bd.Estados on x.estado_id equals u.estado_id
+                                 select new
+                                 {
+                                     x.producto_id,
+                                     x.categoria_id,
+                                     x.estado_id,
+                                     x.producto_descripcion,
+                                     x.producto_existencias,
+                                     x.producto_precio,
+                                     y.categoria_descripcion,
+                                     u.estado_descripcion
+                                 }).ToList();
+
+                    if (datos.Count > 0)
                     {
-                        res.Add(new ProductoEN
+                        List<ProductoEN> res = new List<ProductoEN>();
+                        foreach (var item in datos)
                         {
-                            producto_id = item.producto_id,
-                            categoria_id = item.categoria_id,
-                            categoria_descripcion = item.categoria_descripcion,
-                            estado_id = item.estado_id,
-                            producto_descripcion = item.producto_descripcion,
-                            producto_existencias = item.producto_existencias,
-                            producto_precio = item.producto_precio,
-                            estado_descripcion = item.estado_descripcion                 
-                        });
+                            res.Add(new ProductoEN
+                            {
+                                producto_id = item.producto_id,
+                                categoria_id = item.categoria_id,
+                                categoria_descripcion = item.categoria_descripcion,
+                                estado_id = item.estado_id,
+                                producto_descripcion = item.producto_descripcion,
+                                producto_existencias = item.producto_existencias,
+                                producto_precio = item.producto_precio,
+                                estado_descripcion = item.estado_descripcion
+                            });
+                        }
+
+                        return res;
                     }
 
-                    return res;
+                    return new List<ProductoEN>();
                 }
-
+            }
+            catch (Exception ex)
+            {
                 return new List<ProductoEN>();
             }
         }
@@ -113,27 +120,34 @@ namespace Repuestos_API.Controllers
             }
         }
 
-        
+
         [HttpPut]
         [Route("api/EditarProducto")]
         public int EditarProducto(ProductoEN entidad)
         {
-            using (var bd = new ProyectoEntities())
+            try
             {
-                var datos = (from x in bd.Productos
-                             where x.producto_id == entidad.producto_id
-                             select x).FirstOrDefault();
-
-                if (datos != null)
+                using (var bd = new ProyectoEntities())
                 {
-                    datos.producto_precio = entidad.producto_precio;
-                    datos.producto_descripcion = entidad.producto_descripcion;
-                    datos.producto_existencias = entidad.producto_existencias;
-                    datos.categoria_id = entidad.categoria_id;
-                    datos.estado_id = entidad.estado_id;
-                    return bd.SaveChanges();
-                }
+                    var datos = (from x in bd.Productos
+                                 where x.producto_id == entidad.producto_id
+                                 select x).FirstOrDefault();
 
+                    if (datos != null)
+                    {
+                        datos.producto_precio = entidad.producto_precio;
+                        datos.producto_descripcion = entidad.producto_descripcion;
+                        datos.producto_existencias = entidad.producto_existencias;
+                        datos.categoria_id = entidad.categoria_id;
+                        datos.estado_id = entidad.estado_id;
+                        return bd.SaveChanges();
+                    }
+
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
                 return 0;
             }
         }
@@ -142,22 +156,30 @@ namespace Repuestos_API.Controllers
         [Route("api/EditarProducto")]
         public int EditarProductoExistencia(int producto_id, int producto_existencias, string tipo)
         {
-            using (var bd = new ProyectoEntities())
+            try
             {
-                var datos = (from x in bd.Productos
-                             where x.producto_id == producto_id
-                             select x).FirstOrDefault();
+                using (var bd = new ProyectoEntities())
+                {
+                    var datos = (from x in bd.Productos
+                                 where x.producto_id == producto_id
+                                 select x).FirstOrDefault();
 
-                if (datos != null && tipo == "factura")
-                {
-                    datos.producto_existencias = datos.producto_existencias - producto_existencias;
-                    return bd.SaveChanges();
-                } else if (datos != null && tipo == "orden")
-                {
-                    datos.producto_existencias = datos.producto_existencias + producto_existencias;
-                    return bd.SaveChanges();
+                    if (datos != null && tipo == "factura")
+                    {
+                        datos.producto_existencias = datos.producto_existencias - producto_existencias;
+                        return bd.SaveChanges();
+                    }
+                    else if (datos != null && tipo == "orden")
+                    {
+                        datos.producto_existencias = datos.producto_existencias + producto_existencias;
+                        return bd.SaveChanges();
+                    }
+
+                    return 0;
                 }
-
+            }
+            catch (Exception ex)
+            {
                 return 0;
             }
         }

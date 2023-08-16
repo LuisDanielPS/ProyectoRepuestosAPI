@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Repuestos_API",
+    "\\Repuestos_API\\Controllers"
   ],
-  "SelectedNode": "\\Repuestos_API.sln",
+  "SelectedNode": "\\Repuestos_API\\Controllers\\ClientesController.cs",
   "PreviewInSolutionExplorer": false
 }

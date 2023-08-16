@@ -233,48 +233,54 @@ namespace Repuestos_API.Controllers
         [Route("api/EditarFactura")]
         public string EditarFactura([FromBody] FacturaEncabezadoEN entidad)
         {
-            using (var bd = new ProyectoEntities())
+            try
             {
-                var datos = (from x in bd.Facturas
-                             where x.factura_id == entidad.factura_id
-                             select x).FirstOrDefault();
-
-                if (datos != null)
+                using (var bd = new ProyectoEntities())
                 {
-                    decimal totalFactura = 0.00M;
-                    foreach (var item in entidad.factura_detalle)
+                    var datos = (from x in bd.Facturas
+                                 where x.factura_id == entidad.factura_id
+                                 select x).FirstOrDefault();
+
+                    if (datos != null)
                     {
-                        ProductoEN producto = productosController.ConsultarProductoId(item.producto_id);
-                        totalFactura = totalFactura + Math.Round(producto.producto_precio * item.facturaD_cantidad - item.facturaD_descuento, 2);
-                    }
+                        decimal totalFactura = 0.00M;
+                        foreach (var item in entidad.factura_detalle)
+                        {
+                            ProductoEN producto = productosController.ConsultarProductoId(item.producto_id);
+                            totalFactura = totalFactura + Math.Round(producto.producto_precio * item.facturaD_cantidad - item.facturaD_descuento, 2);
+                        }
 
-                    datos.cliente_id = entidad.cliente_id;
-                    datos.factura_tipo = entidad.factura_tipo;
-                    datos.factura_descripcion = entidad.factura_descripcion;
-                    datos.factura_total = totalFactura;
-                    bd.SaveChanges();
-
-                    EliminarFacturaDetalle(entidad.factura_id);
-
-                    foreach (var item in entidad.factura_detalle)
-                    {
-                        ProductoEN producto = productosController.ConsultarProductoId(item.producto_id);
-
-                        facturasDetalle tabla2 = new facturasDetalle();
-                        tabla2.factura_id = entidad.factura_id;
-                        tabla2.producto_id = item.producto_id;
-                        tabla2.facturaD_cantidad = item.facturaD_cantidad;
-                        tabla2.facturaD_precio = Math.Round(producto.producto_precio, 2);
-                        tabla2.facturaD_descuento = Math.Round(item.facturaD_descuento, 2);
-                        decimal totalDetalle = Math.Round(producto.producto_precio * item.facturaD_cantidad - item.facturaD_descuento, 2);
-                        tabla2.facturaD_total = totalDetalle;
-                        bd.facturasDetalle.Add(tabla2);
+                        datos.cliente_id = entidad.cliente_id;
+                        datos.factura_tipo = entidad.factura_tipo;
+                        datos.factura_descripcion = entidad.factura_descripcion;
+                        datos.factura_total = totalFactura;
                         bd.SaveChanges();
-                        productosController.EditarProductoExistencia(item.producto_id, item.facturaD_cantidad, "factura");
-                    }
-                }
 
-                return "Factura modificada con éxito";
+                        EliminarFacturaDetalle(entidad.factura_id);
+
+                        foreach (var item in entidad.factura_detalle)
+                        {
+                            ProductoEN producto = productosController.ConsultarProductoId(item.producto_id);
+
+                            facturasDetalle tabla2 = new facturasDetalle();
+                            tabla2.factura_id = entidad.factura_id;
+                            tabla2.producto_id = item.producto_id;
+                            tabla2.facturaD_cantidad = item.facturaD_cantidad;
+                            tabla2.facturaD_precio = Math.Round(producto.producto_precio, 2);
+                            tabla2.facturaD_descuento = Math.Round(item.facturaD_descuento, 2);
+                            decimal totalDetalle = Math.Round(producto.producto_precio * item.facturaD_cantidad - item.facturaD_descuento, 2);
+                            tabla2.facturaD_total = totalDetalle;
+                            bd.facturasDetalle.Add(tabla2);
+                            bd.SaveChanges();
+                            productosController.EditarProductoExistencia(item.producto_id, item.facturaD_cantidad, "factura");
+                        }
+                    }
+
+                    return "Factura modificada con éxito";
+                }
+            }catch(Exception ex)
+            {
+                return ("Error" + ex);
             }
         }
 

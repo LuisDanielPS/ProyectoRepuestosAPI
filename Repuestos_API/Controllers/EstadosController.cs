@@ -37,27 +37,34 @@ namespace Repuestos_API.Controllers
         [Route("api/ConsultarEstados")]
         public List<EstadoEN> ConsultarEstados()
         {
-            using (var bd = new ProyectoEntities())
+            try
             {
-                var datos = (from x in bd.Estados
-                             select x).ToList();
-
-                if (datos.Count > 0)
+                using (var bd = new ProyectoEntities())
                 {
-                    List<EstadoEN> res = new List<EstadoEN>();
-                    foreach (var item in datos)
+                    var datos = (from x in bd.Estados
+                                 select x).ToList();
+
+                    if (datos.Count > 0)
                     {
-                        res.Add(new EstadoEN
+                        List<EstadoEN> res = new List<EstadoEN>();
+                        foreach (var item in datos)
                         {
-                            estado_id = item.estado_id,
-                            estado_descripcion = item.estado_descripcion
-                        });
+                            res.Add(new EstadoEN
+                            {
+                                estado_id = item.estado_id,
+                                estado_descripcion = item.estado_descripcion
+                            });
+                        }
+
+                        return res;
                     }
 
-                    return res;
+                    return new List<EstadoEN>();
                 }
-
+            }catch (Exception ex)
+            {
                 return new List<EstadoEN>();
+
             }
         }
 

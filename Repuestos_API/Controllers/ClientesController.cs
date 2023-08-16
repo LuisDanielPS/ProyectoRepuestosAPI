@@ -44,34 +44,40 @@ namespace Repuestos_API.Controllers
         [Route("api/ConsultarClientes")]
         public List<ClienteEN> ConsultarClientes()
         {
-            using (var bd = new ProyectoEntities())
+            try
             {
-                var datos = (from x in bd.Clientes
-                                select x).ToList();
-
-                if (datos.Count > 0)
+                using (var bd = new ProyectoEntities())
                 {
-                    List<ClienteEN> res = new List<ClienteEN>();
-                    foreach (var item in datos)
+                    var datos = (from x in bd.Clientes
+                                 select x).ToList();
+
+                    if (datos.Count > 0)
                     {
-                        res.Add(new ClienteEN
+                        List<ClienteEN> res = new List<ClienteEN>();
+                        foreach (var item in datos)
                         {
-                            cliente_id = item.cliente_id,
-                            cliente_cedula = item.cliente_cedula,
-                            cliente_nombre = item.cliente_nombre,
-                            cliente_apellido = item.cliente_apellido,
-                            cliente_correo = item.cliente_correo,
-                            cliente_telefono = item.cliente_telefono,
-                            cliente_direccion = item.cliente_direccion
-                        });
+                            res.Add(new ClienteEN
+                            {
+                                cliente_id = item.cliente_id,
+                                cliente_cedula = item.cliente_cedula,
+                                cliente_nombre = item.cliente_nombre,
+                                cliente_apellido = item.cliente_apellido,
+                                cliente_correo = item.cliente_correo,
+                                cliente_telefono = item.cliente_telefono,
+                                cliente_direccion = item.cliente_direccion
+                            });
+                        }
+
+                        return res;
                     }
 
-                    return res;
+                    return new List<ClienteEN>();
                 }
-
+            }catch (Exception ex)
+            {
                 return new List<ClienteEN>();
             }
-        }
+            }
 
         [HttpDelete]
         [Route("api/EliminaCliente")]
@@ -102,25 +108,31 @@ namespace Repuestos_API.Controllers
         [Route("api/EditarCliente")]
         public int EditarCliente(ClienteEN entidad)
         {
-            using (var bd = new ProyectoEntities())
+            try
             {
-                var datos = (from x in bd.Clientes
-                             where x.cliente_id == entidad.cliente_id
-                             select x).FirstOrDefault();
-
-                if (datos != null)
+                using (var bd = new ProyectoEntities())
                 {
-                    datos.cliente_id = entidad.cliente_id;
-                    datos.cliente_cedula = entidad.cliente_cedula;
-                    datos.cliente_nombre = entidad.cliente_nombre;
-                    datos.cliente_apellido = entidad.cliente_apellido;
-                    datos.cliente_correo = entidad.cliente_correo;
-                    datos.cliente_telefono = entidad.cliente_telefono;
-                    datos.cliente_direccion = entidad.cliente_direccion;
-                    return bd.SaveChanges();
-                }
 
-                return 0;
+                    var datos = (from x in bd.Clientes
+                                 where x.cliente_id == entidad.cliente_id
+                                 select x).FirstOrDefault();
+
+                    if (datos != null)
+                    {
+                        datos.cliente_id = entidad.cliente_id;
+                        datos.cliente_cedula = entidad.cliente_cedula;
+                        datos.cliente_nombre = entidad.cliente_nombre;
+                        datos.cliente_apellido = entidad.cliente_apellido;
+                        datos.cliente_correo = entidad.cliente_correo;
+                        datos.cliente_telefono = entidad.cliente_telefono;
+                        datos.cliente_direccion = entidad.cliente_direccion;
+                        return bd.SaveChanges();
+                    }
+
+                    return 0;
+                }
+            } catch (Exception ex) {
+                return 0 ;
             }
         }
     }

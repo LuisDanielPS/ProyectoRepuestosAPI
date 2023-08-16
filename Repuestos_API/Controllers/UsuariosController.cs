@@ -18,44 +18,49 @@ namespace Repuestos_API.Controllers
         [Route("api/IniciarSesion")]
         public UsuarioEN IniciarSesion(UsuarioEN entidad)
         {
-            using (var bd = new ProyectoEntities())
+            try
             {
-                var datos = (from x in bd.Usuarios
-                             join y in bd.Roles on x.rol_id equals y.rol_id
-                             where x.usu_correo == entidad.usu_correo
-                                && x.usu_clave == entidad.usu_clave
-                             select new
-                             {
-                                 x.usu_claveTemporal,
-                                 x.usu_caducidad,
-                                 x.usu_correo,
-                                 x.usu_identificacion,
-                                 x.usu_nombre,
-                                 y.rol_id,
-                                 x.usuario_id,
-                                 y.rol_descripcion
-                             }).FirstOrDefault();
-
-                if (datos != null)
+                using (var bd = new ProyectoEntities())
                 {
-                    if (datos.usu_caducidad < DateTime.Now)
+                    var datos = (from x in bd.Usuarios
+                                 join y in bd.Roles on x.rol_id equals y.rol_id
+                                 where x.usu_correo == entidad.usu_correo
+                                    && x.usu_clave == entidad.usu_clave
+                                 select new
+                                 {
+                                     x.usu_claveTemporal,
+                                     x.usu_caducidad,
+                                     x.usu_correo,
+                                     x.usu_identificacion,
+                                     x.usu_nombre,
+                                     y.rol_id,
+                                     x.usuario_id,
+                                     y.rol_descripcion
+                                 }).FirstOrDefault();
+
+                    if (datos != null)
                     {
-                        return null;
+                        if (datos.usu_caducidad < DateTime.Now)
+                        {
+                            return null;
+                        }
+
+                        UsuarioEN res = new UsuarioEN();
+                        res.usu_correo = datos.usu_correo;
+                        res.usu_identificacion = datos.usu_identificacion;
+                        res.usu_nombre = datos.usu_nombre;
+                        res.rol_id = datos.rol_id;
+                        res.usuario_id = datos.usuario_id;
+                        res.rol_descripcion = datos.rol_descripcion;
+                        return res;
                     }
 
-                    UsuarioEN res = new UsuarioEN();
-                    res.usu_correo = datos.usu_correo;
-                    res.usu_identificacion = datos.usu_identificacion;
-                    res.usu_nombre = datos.usu_nombre;
-                    res.rol_id = datos.rol_id;
-                    res.usuario_id = datos.usuario_id;
-                    res.rol_descripcion = datos.rol_descripcion;
-                    return res;
+                    return null;
                 }
-
-                return null;
+            }catch(Exception ex)
+            {
+                return new UsuarioEN();
             }
-
         }
         [HttpPost]
         [Route("api/RegistrarUsuario")]
@@ -91,40 +96,47 @@ namespace Repuestos_API.Controllers
         [Route("api/ConsultarUsuarios")]
         public List<UsuarioEN> ConsultarUsuarios()
         {
-            using (var bd = new ProyectoEntities())
+            try
             {
-                var datos = (from x in bd.Usuarios
-                             join y in bd.Roles on x.rol_id equals y.rol_id
-                             select new
-                             {
-                                 x.rol_id,
-                                 x.usu_identificacion,
-                                 x.usu_nombre,
-                                 x.usu_correo,
-                                 x.usuario_id,
-                                 y.rol_descripcion,
-                             }).ToList();
-
-                if (datos.Count > 0)
+                using (var bd = new ProyectoEntities())
                 {
-                    List<UsuarioEN> res = new List<UsuarioEN>();
-                    foreach (var item in datos)
+                    var datos = (from x in bd.Usuarios
+                                 join y in bd.Roles on x.rol_id equals y.rol_id
+                                 select new
+                                 {
+                                     x.rol_id,
+                                     x.usu_identificacion,
+                                     x.usu_nombre,
+                                     x.usu_correo,
+                                     x.usuario_id,
+                                     y.rol_descripcion,
+                                 }).ToList();
+
+                    if (datos.Count > 0)
                     {
-                        res.Add(new UsuarioEN
+                        List<UsuarioEN> res = new List<UsuarioEN>();
+                        foreach (var item in datos)
                         {
-                           usuario_id = item.usuario_id,
-                            usu_correo = item.usu_correo,
-                            usu_nombre = item.usu_nombre,
-                            usu_identificacion = item.usu_identificacion,
-                            rol_descripcion = item.rol_descripcion
-                           
-                        });
+                            res.Add(new UsuarioEN
+                            {
+                                usuario_id = item.usuario_id,
+                                usu_correo = item.usu_correo,
+                                usu_nombre = item.usu_nombre,
+                                usu_identificacion = item.usu_identificacion,
+                                rol_descripcion = item.rol_descripcion
+
+                            });
+                        }
+
+                        return res;
                     }
 
-                    return res;
+                    return new List<UsuarioEN>();
                 }
-
+            }catch(Exception ex)
+            {
                 return new List<UsuarioEN>();
+
             }
         }
 
@@ -132,21 +144,27 @@ namespace Repuestos_API.Controllers
         [Route("api/EditarUsuario")]
         public int EditarUsuario(UsuarioEN entidad)
         {
-            using (var bd = new ProyectoEntities())
+            try
             {
-                var datos = (from x in bd.Usuarios
-                             where x.usuario_id == entidad.usuario_id
-                             select x).FirstOrDefault();
-
-                if (datos != null)
+                using (var bd = new ProyectoEntities())
                 {
-                    datos.usu_nombre = entidad.usu_nombre;
-                    datos.usu_identificacion = entidad.usu_identificacion;
-                    datos.usu_correo = entidad.usu_correo;
-                    datos.rol_id = entidad.rol_id;
-                    return bd.SaveChanges();
-                }
+                    var datos = (from x in bd.Usuarios
+                                 where x.usuario_id == entidad.usuario_id
+                                 select x).FirstOrDefault();
 
+                    if (datos != null)
+                    {
+                        datos.usu_nombre = entidad.usu_nombre;
+                        datos.usu_identificacion = entidad.usu_identificacion;
+                        datos.usu_correo = entidad.usu_correo;
+                        datos.rol_id = entidad.rol_id;
+                        return bd.SaveChanges();
+                    }
+
+                    return 0;
+                }
+            }catch(Exception ex)
+            {
                 return 0;
             }
         }
@@ -180,49 +198,65 @@ namespace Repuestos_API.Controllers
         [Route("api/RecuperarContrasenia")]
         public bool RecuperarContrasenia(UsuarioEN entidad)
         {
-            using (var bd = new ProyectoEntities())
+            try
             {
-                var datos = (from x in bd.Usuarios
-                             where x.usu_correo == entidad.usu_correo
-                             select x).FirstOrDefault();
-
-                if (datos != null)
+                using (var bd = new ProyectoEntities())
                 {
-                    string claveTemp = utilModel.GenerarContraseniaTemp();
-                    datos.usu_clave = utilModel.Encriptar(claveTemp);
-                    datos.usu_claveTemporal = true;
-                    datos.usu_caducidad = DateTime.Now.AddMinutes(60);
-                    bd.SaveChanges();
+                    var datos = (from x in bd.Usuarios
+                                 where x.usu_correo == entidad.usu_correo
+                                 select x).FirstOrDefault();
 
-                    string mensaje = "Estimado(a) " + datos.usu_nombre + ". Se ha generado la siguiente contraseña temporal: " + claveTemp;
-                    utilModel.EnviarCorreo(datos.usu_correo, "Recuperación de contraseña", mensaje);
-                    return true;
+                    if (datos != null)
+                    {
+                        string claveTemp = utilModel.GenerarContraseniaTemp();
+                        datos.usu_clave = utilModel.Encriptar(claveTemp);
+                        datos.usu_claveTemporal = true;
+                        datos.usu_caducidad = DateTime.Now.AddMinutes(60);
+                        bd.SaveChanges();
+
+                        string mensaje = "Estimado(a) " + datos.usu_nombre + ". Se ha generado la siguiente contraseña temporal: " + claveTemp;
+                        utilModel.EnviarCorreo(datos.usu_correo, "Recuperación de contraseña", mensaje);
+                        return true;
+                    }
+
+                    return false;
                 }
-
+            }
+            catch (Exception ex)
+            {
                 return false;
             }
         }
+
 
         [HttpPut]
         [Route("api/CambiarContrasenna")]
         public int CambiarContrasenna(UsuarioEN entidad)
         {
-            using (var bd = new ProyectoEntities())
+            try
             {
-                var datos = (from x in bd.Usuarios
-                             where x.usuario_id == entidad.usuario_id
-                             select x).FirstOrDefault();
-
-                if (datos != null)
+                using (var bd = new ProyectoEntities())
                 {
-                    datos.usu_clave = entidad.ContrasennaNueva;
-                    datos.usu_claveTemporal = false;
-                    datos.usu_caducidad = DateTime.Now.AddYears(1);
-                    return bd.SaveChanges();
-                }
+                    var datos = (from x in bd.Usuarios
+                                 where x.usuario_id == entidad.usuario_id
+                                 select x).FirstOrDefault();
 
+                    if (datos != null)
+                    {
+                        datos.usu_clave = entidad.ContrasennaNueva;
+                        datos.usu_claveTemporal = false;
+                        datos.usu_caducidad = DateTime.Now.AddYears(1);
+                        return bd.SaveChanges();
+                    }
+
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
                 return 0;
             }
         }
+
     }
 }
