@@ -173,6 +173,7 @@
     <Compile Include="Controllers\EstadosController.cs" />
     <Compile Include="Controllers\FacturasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrdenesController.cs" />
     <Compile Include="Controllers\ProductosController.cs" />
     <Compile Include="Controllers\ProveedoresController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
@@ -183,6 +184,8 @@
     <Compile Include="Entities\EstadoEN.cs" />
     <Compile Include="Entities\FacturaDetalleEN.cs" />
     <Compile Include="Entities\FacturaEncabezadoEN.cs" />
+    <Compile Include="Entities\OrdenDetalleEN.cs" />
+    <Compile Include="Entities\OrdenEncabezadoEN.cs" />
     <Compile Include="Entities\ProductoEN.cs" />
     <Compile Include="Entities\ProveedorEN.cs" />
     <Compile Include="Entities\RolEN.cs" />

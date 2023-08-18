@@ -153,7 +153,7 @@ namespace Repuestos_API.Controllers
         }
 
         [HttpPut]
-        [Route("api/EditarProducto")]
+        [Route("api/EditarProductoExistencia")]
         public int EditarProductoExistencia(int producto_id, int producto_existencias, string tipo)
         {
             try

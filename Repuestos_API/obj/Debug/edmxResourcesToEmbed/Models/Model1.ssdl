@@ -35,7 +35,7 @@
     <Property Name="factura_tipo" Type="varchar" MaxLength="10" Nullable="false" />
     <Property Name="factura_fecha" Type="date" Nullable="false" />
     <Property Name="factura_descripcion" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="factura_total" Type="decimal" Precision="7" Scale="2" Nullable="false" />
+    <Property Name="factura_total" Type="decimal" Precision="15" Scale="2" Nullable="false" />
   </EntityType>
   <EntityType Name="facturasDetalle">
     <Key>
@@ -45,9 +45,9 @@
     <Property Name="factura_id" Type="int" Nullable="false" />
     <Property Name="producto_id" Type="int" Nullable="false" />
     <Property Name="facturaD_cantidad" Type="int" Nullable="false" />
-    <Property Name="facturaD_precio" Type="decimal" Precision="7" Scale="2" Nullable="false" />
-    <Property Name="facturaD_descuento" Type="decimal" Precision="7" Scale="2" Nullable="false" />
-    <Property Name="facturaD_total" Type="decimal" Precision="7" Scale="2" Nullable="false" />
+    <Property Name="facturaD_precio" Type="decimal" Precision="15" Scale="2" Nullable="false" />
+    <Property Name="facturaD_descuento" Type="decimal" Precision="15" Scale="2" Nullable="false" />
+    <Property Name="facturaD_total" Type="decimal" Precision="15" Scale="2" Nullable="false" />
   </EntityType>
   <EntityType Name="ordenDetalle">
     <Key>
@@ -62,7 +62,7 @@
     <Key>
       <PropertyRef Name="orden_id" />
     </Key>
-    <Property Name="orden_id" Type="int" Nullable="false" />
+    <Property Name="orden_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="proveedor_id" Type="int" Nullable="false" />
     <Property Name="estado_id" Type="int" Nullable="false" />
     <Property Name="orden_tipo" Type="varchar" MaxLength="10" Nullable="false" />
@@ -107,7 +107,7 @@
     </Key>
     <Property Name="usuario_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="usu_correo" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="usu_clave" Type="varchar" MaxLength="25" />
+    <Property Name="usu_clave" Type="varchar" MaxLength="25" Nullable="false" />
     <Property Name="usu_nombre" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="rol_id" Type="int" Nullable="false" />
     <Property Name="usu_identificacion" Type="varchar" MaxLength="20" Nullable="false" />
@@ -128,13 +128,13 @@
   </Association>
   <Association Name="FK_facturasDetalle_Facturas">
     <End Role="Facturas" Type="Self.Facturas" Multiplicity="1" />
-    <End Role="facturasDetalle" Type="Self.facturasDetalle" Multiplicity="0..1" />
+    <End Role="facturasDetalle" Type="Self.facturasDetalle" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Facturas">
         <PropertyRef Name="factura_id" />
       </Principal>
       <Dependent Role="facturasDetalle">
-        <PropertyRef Name="facturaD_id" />
+        <PropertyRef Name="factura_id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

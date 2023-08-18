@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ProyectoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ProyectoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Categorias">
           <Key>
             <PropertyRef Name="categoria_id" />
@@ -40,7 +40,7 @@
           <Property Name="factura_tipo" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="factura_fecha" Type="date" Nullable="false" />
           <Property Name="factura_descripcion" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="factura_total" Type="decimal" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="factura_total" Type="decimal" Precision="15" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="facturasDetalle">
           <Key>
@@ -50,9 +50,9 @@
           <Property Name="factura_id" Type="int" Nullable="false" />
           <Property Name="producto_id" Type="int" Nullable="false" />
           <Property Name="facturaD_cantidad" Type="int" Nullable="false" />
-          <Property Name="facturaD_precio" Type="decimal" Precision="7" Scale="2" Nullable="false" />
-          <Property Name="facturaD_descuento" Type="decimal" Precision="7" Scale="2" Nullable="false" />
-          <Property Name="facturaD_total" Type="decimal" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="facturaD_precio" Type="decimal" Precision="15" Scale="2" Nullable="false" />
+          <Property Name="facturaD_descuento" Type="decimal" Precision="15" Scale="2" Nullable="false" />
+          <Property Name="facturaD_total" Type="decimal" Precision="15" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="ordenDetalle">
           <Key>
@@ -67,7 +67,7 @@
           <Key>
             <PropertyRef Name="orden_id" />
           </Key>
-          <Property Name="orden_id" Type="int" Nullable="false" />
+          <Property Name="orden_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="proveedor_id" Type="int" Nullable="false" />
           <Property Name="estado_id" Type="int" Nullable="false" />
           <Property Name="orden_tipo" Type="varchar" MaxLength="10" Nullable="false" />
@@ -112,7 +112,7 @@
           </Key>
           <Property Name="usuario_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="usu_correo" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="usu_clave" Type="varchar" MaxLength="25" />
+          <Property Name="usu_clave" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="usu_nombre" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="rol_id" Type="int" Nullable="false" />
           <Property Name="usu_identificacion" Type="varchar" MaxLength="20" Nullable="false" />
@@ -133,13 +133,13 @@
         </Association>
         <Association Name="FK_facturasDetalle_Facturas">
           <End Role="Facturas" Type="Self.Facturas" Multiplicity="1" />
-          <End Role="facturasDetalle" Type="Self.facturasDetalle" Multiplicity="0..1" />
+          <End Role="facturasDetalle" Type="Self.facturasDetalle" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Facturas">
               <PropertyRef Name="factura_id" />
             </Principal>
             <Dependent Role="facturasDetalle">
-              <PropertyRef Name="facturaD_id" />
+              <PropertyRef Name="factura_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -292,7 +292,8 @@
             <End Role="Usuarios" EntitySet="Usuarios" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ProyectoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -335,10 +336,9 @@
           <Property Name="factura_tipo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="factura_fecha" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="factura_descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="factura_total" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="factura_total" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
           <NavigationProperty Name="Clientes" Relationship="Self.FK_Facturas_Clientes" FromRole="Facturas" ToRole="Clientes" />
           <NavigationProperty Name="facturasDetalle" Relationship="Self.FK_facturasDetalle_Facturas" FromRole="Facturas" ToRole="facturasDetalle" />
-          <NavigationProperty Name="facturasDetalle1" Relationship="ProyectoModel.FK_facturasDetalle_Facturas1" FromRole="Facturas" ToRole="facturasDetalle" />
         </EntityType>
         <EntityType Name="facturasDetalle">
           <Key>
@@ -348,18 +348,17 @@
           <Property Name="factura_id" Type="Int32" Nullable="false" />
           <Property Name="producto_id" Type="Int32" Nullable="false" />
           <Property Name="facturaD_cantidad" Type="Int32" Nullable="false" />
-          <Property Name="facturaD_precio" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
-          <Property Name="facturaD_descuento" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
-          <Property Name="facturaD_total" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="facturaD_precio" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
+          <Property Name="facturaD_descuento" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
+          <Property Name="facturaD_total" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
           <NavigationProperty Name="Facturas" Relationship="Self.FK_facturasDetalle_Facturas" FromRole="facturasDetalle" ToRole="Facturas" />
           <NavigationProperty Name="Productos" Relationship="Self.FK_facturasDetalle_Productos" FromRole="facturasDetalle" ToRole="Productos" />
-          <NavigationProperty Name="Facturas1" Relationship="ProyectoModel.FK_facturasDetalle_Facturas1" FromRole="facturasDetalle" ToRole="Facturas" />
         </EntityType>
         <EntityType Name="ordenDetalle">
           <Key>
             <PropertyRef Name="ordenD_id" />
           </Key>
-          <Property Name="ordenD_id" Type="Int32" Nullable="false" />
+          <Property Name="ordenD_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="orden_id" Type="Int32" Nullable="false" />
           <Property Name="producto_id" Type="Int32" Nullable="false" />
           <Property Name="producto_cantidad" Type="Int32" Nullable="false" />
@@ -370,7 +369,7 @@
           <Key>
             <PropertyRef Name="orden_id" />
           </Key>
-          <Property Name="orden_id" Type="Int32" Nullable="false" />
+          <Property Name="orden_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="proveedor_id" Type="Int32" Nullable="false" />
           <Property Name="estado_id" Type="Int32" Nullable="false" />
           <Property Name="orden_tipo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
@@ -424,7 +423,7 @@
           </Key>
           <Property Name="usuario_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="usu_correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="usu_clave" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="usu_clave" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="usu_nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="rol_id" Type="Int32" Nullable="false" />
           <Property Name="usu_identificacion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
@@ -604,23 +603,7 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Usuarios" EntitySet="Usuarios" />
           </AssociationSet>
-          <AssociationSet Name="FK_facturasDetalle_Facturas1" Association="ProyectoModel.FK_facturasDetalle_Facturas1">
-            <End Role="Facturas" EntitySet="Facturas" />
-            <End Role="facturasDetalle" EntitySet="facturasDetalle" />
-          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK_facturasDetalle_Facturas1">
-          <End Type="ProyectoModel.Facturas" Role="Facturas" Multiplicity="1" />
-          <End Type="ProyectoModel.facturasDetalle" Role="facturasDetalle" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Facturas">
-              <PropertyRef Name="factura_id" />
-            </Principal>
-            <Dependent Role="facturasDetalle">
-              <PropertyRef Name="facturaD_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
